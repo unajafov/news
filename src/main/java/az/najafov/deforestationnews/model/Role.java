@@ -1,7 +1,6 @@
 package az.najafov.deforestationnews.model;
 
 import az.najafov.deforestationnews.common.BaseEntity;
-import az.najafov.deforestationnews.model.IgnoredPermission;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

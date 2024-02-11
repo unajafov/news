@@ -1,7 +1,7 @@
 package az.najafov.deforestationnews.security.provider;
 
-import az.najafov.deforestationnews.model.User;
 import az.najafov.deforestationnews.model.Role;
+import az.najafov.deforestationnews.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -40,21 +40,10 @@ public class TokenProvider {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean isChangePasswordRequired(String token) throws JwtException {
-        Claims claims = extractAllClaims(token);
-        return (boolean) claims.get("changePasswordRequired");
-    }
-
     public String extractUsername(String token) {
         Claims claims = extractAllClaims(token);
         return claims.get("username").toString();
     }
-
-    public boolean isUserChangedPassword(String token) {
-        Claims claims = extractAllClaims(token);
-        return (boolean) claims.get("passwordChanged");
-    }
-
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) throws JwtException {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -96,18 +85,6 @@ public class TokenProvider {
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
-    public boolean isTokenValid(String token, UserDetails generalUser) {
-        try {
-            final String email = extractEmail(token);
-            boolean isTokenValid = (email.equals(generalUser.getUsername()) && !isTokenExpired(token));
-
-            return isTokenValid;
-        } catch (JwtException e) {
-            return false;
-        }
-    }
-
     public boolean isTokenValid(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
@@ -115,14 +92,6 @@ public class TokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return !claims.getExpiration().before(new Date());
-    }
-
-    private boolean isTokenExpired(String token) throws JwtException {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) throws JwtException {
-        return extractClaim(token, Claims::getExpiration);
     }
 
     public Claims extractAllClaims(String token) throws JwtException {

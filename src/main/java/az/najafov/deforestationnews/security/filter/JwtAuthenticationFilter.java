@@ -2,9 +2,9 @@ package az.najafov.deforestationnews.security.filter;
 
 import az.najafov.deforestationnews.common.ErrorHandlerUtil;
 import az.najafov.deforestationnews.exception.BaseErrorResponse;
+import az.najafov.deforestationnews.security.provider.TokenProvider;
 import az.najafov.deforestationnews.security.userdetails.CustomUserDetailsService;
 import az.najafov.deforestationnews.security.userdetails.UserDetails;
-import az.najafov.deforestationnews.security.provider.TokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

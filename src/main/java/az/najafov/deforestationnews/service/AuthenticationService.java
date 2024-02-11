@@ -1,5 +1,6 @@
 package az.najafov.deforestationnews.service;
 
+import az.najafov.deforestationnews.dto.AuthenticationRequestDto;
 import az.najafov.deforestationnews.dto.LoginRequestDto;
 import az.najafov.deforestationnews.dto.RegistrationRequestDto;
 import az.najafov.deforestationnews.dto.TokenResponseDto;
@@ -8,12 +9,11 @@ import az.najafov.deforestationnews.exception.PasswordMismatchException;
 import az.najafov.deforestationnews.exception.TokenNotValidException;
 import az.najafov.deforestationnews.exception.UsernameAlreadyExistsException;
 import az.najafov.deforestationnews.model.Region;
+import az.najafov.deforestationnews.model.Role;
 import az.najafov.deforestationnews.model.User;
 import az.najafov.deforestationnews.repository.RegionRepository;
 import az.najafov.deforestationnews.repository.RoleRepository;
 import az.najafov.deforestationnews.repository.UserRepository;
-import az.najafov.deforestationnews.dto.AuthenticationRequestDto;
-import az.najafov.deforestationnews.model.Role;
 import az.najafov.deforestationnews.security.provider.TokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
