@@ -3,7 +3,7 @@ package az.najafov.deforestationnews.common;
 import az.najafov.deforestationnews.exception.EntityNotFoundException;
 import az.najafov.deforestationnews.model.User;
 import az.najafov.deforestationnews.repository.UserRepository;
-import az.najafov.deforestationnews.security.UserDetails;
+import az.najafov.deforestationnews.security.userdetails.UserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

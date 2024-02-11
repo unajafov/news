@@ -1,4 +1,4 @@
-package az.najafov.deforestationnews.security;
+package az.najafov.deforestationnews.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

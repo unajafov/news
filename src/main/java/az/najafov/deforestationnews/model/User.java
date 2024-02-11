@@ -1,9 +1,7 @@
 package az.najafov.deforestationnews.model;
 
 import az.najafov.deforestationnews.common.BaseEntity;
-import az.najafov.deforestationnews.security.Role;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;

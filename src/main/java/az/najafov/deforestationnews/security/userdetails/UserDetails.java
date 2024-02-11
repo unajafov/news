@@ -1,4 +1,4 @@
-package az.najafov.deforestationnews.security;
+package az.najafov.deforestationnews.security.userdetails;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

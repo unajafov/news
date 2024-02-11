@@ -1,10 +1,11 @@
-/*
-package az.najafov.deforestationnews.security;
+package az.najafov.deforestationnews.security.filter;
 
 import az.najafov.deforestationnews.common.ErrorHandlerUtil;
 import az.najafov.deforestationnews.common.SecurityUtil;
 import az.najafov.deforestationnews.exception.BaseErrorResponse;
+import az.najafov.deforestationnews.model.Role;
 import az.najafov.deforestationnews.model.User;
+import az.najafov.deforestationnews.model.IgnoredPermission;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -32,37 +33,59 @@ public class AuthorizationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         try {
+            User user = securityUtil.getUser();
+            Set<Role> roles = user.getRoles();
+
+            if (Objects.isNull(roles) || roles.isEmpty()) {
+                BaseErrorResponse baseErrorResponse = new BaseErrorResponse(
+                        "Permission denied", "AUTH_003",
+                        user.getUsername() + " does not have any roles");
+                ErrorHandlerUtil.buildHttpErrorResponse(response, baseErrorResponse, 403);
+                return;
+            }
+
             String URI = httpServletRequest.getRequestURI();
-            if (URI.startsWith("/api/admin")) {
-                User user = securityUtil.getUser();
-                boolean hasAdminRole = hasAdminRole(user.getRoles());
-                if (!hasAdminRole) {
+            String httpMethod = httpServletRequest.getMethod();
+            for (IgnoredURI ignoredURI : getAllowedURIs(roles)) {
+                if (antPathMatcher.match(ignoredURI.URI, URI) && ignoredURI.httpMethod.equals(httpMethod)) {
                     BaseErrorResponse baseErrorResponse = new BaseErrorResponse(
                             "Permission denied", "AUTH_003",
-                            "This url " + URI + " cannot be accessed by " + user.getUsername());
+                            "This url " + URI + " cannot access by " + user.getUsername());
                     ErrorHandlerUtil.buildHttpErrorResponse(response, baseErrorResponse, 403);
+                    return;
                 }
             }
             chain.doFilter(request, response);
-
         } catch (Exception e) {
             log.error("Authorization filter error", e);
             e.printStackTrace();
             BaseErrorResponse baseErrorResponse = new BaseErrorResponse("Exception", "AUTH_006",
                     "Filter chain exception");
             ErrorHandlerUtil.buildHttpErrorResponse(response, baseErrorResponse, 500);
+
         }
     }
 
-    private boolean hasAdminRole(Set<Role> roles) {
+    private Set<IgnoredURI> getAllowedURIs(Set<Role> roles) {
+        Set<IgnoredURI> ignoredURIs = new HashSet<>();
         for (Role role : roles) {
-            if ("ADMIN".equals(role.getName())) {
-                return true;
+            for (IgnoredPermission ignoredPermission : role.getIgnoredPermissions()) {
+                ignoredURIs.add(new IgnoredURI(ignoredPermission.getUrl(), ignoredPermission.getHttpMethod()));
             }
         }
-        return false;
+        return ignoredURIs;
+    }
+
+    private class IgnoredURI {
+        private final String URI;
+        private final String httpMethod;
+
+        public IgnoredURI(String URI, String httpMethod) {
+            this.URI = URI;
+            this.httpMethod = httpMethod;
+        }
+
     }
 
 }
 
-*/

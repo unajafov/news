@@ -22,10 +22,33 @@ import java.util.List;
 @Tag(name = "Regions", description = "API operations for managing geographical regions")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/general/regions")
+@RequestMapping("/api/regions")
 public class RegionController {
 
     private final RegionService regionService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a new region", description = "Creates a new geographical region with " +
+            "the provided details.")
+    public void create(@RequestBody RegionRequestDto requestDto) {
+        regionService.create(requestDto);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update a region", description = "Updates an existing geographical region with " +
+            "the specified ID.")
+    public void update(@PathVariable Long id, RegionRequestDto requestDto) {
+        regionService.update(id, requestDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete region by ID", description = "Deletes a specific geographical region based on " +
+            "its unique identifier.")
+    public void delete(@PathVariable Long id) {
+        regionService.delete(id);
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get region by ID", description = "Retrieves a specific geographical region based " +

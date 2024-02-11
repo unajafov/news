@@ -35,4 +35,33 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 ErrorMessageCode.PASSWORD_MISMATCH.name(), ex.getMessage()));
     }
 
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<BaseErrorResponse> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
+        log.error(ex.getMessage(), ex);
+        return ResponseEntity.status(400).body(new BaseErrorResponse("failure",
+                ErrorMessageCode.USERNAME_ALREADY_EXISTS.name(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(LongTimeInActiveUserException.class)
+    public ResponseEntity<BaseErrorResponse> handleLongTimeInActiveUserException(LongTimeInActiveUserException ex) {
+        log.error(ex.getMessage(), ex);
+        return ResponseEntity.status(440).body(new BaseErrorResponse("failure",
+                ErrorMessageCode.LONG_TIME_INACTIVE_USER.name(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(TokenIsNotExpiredException.class)
+    public ResponseEntity<BaseErrorResponse> handleTokenIsNotExpiredException(TokenIsNotExpiredException ex) {
+        log.error(ex.getMessage(), ex);
+        return ResponseEntity.status(440).body(new BaseErrorResponse("failure",
+                ErrorMessageCode.TOKEN_IS_NOT_EXPIRED.name(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(TokenNotValidException.class)
+    public ResponseEntity<BaseErrorResponse> handleTokenNotValidException(TokenNotValidException ex) {
+        log.error(ex.getMessage(), ex);
+        return ResponseEntity.status(440).body(new BaseErrorResponse("failure",
+                ErrorMessageCode.TOKEN_NOT_VALID.name(), ex.getMessage()));
+    }
+
+
 }

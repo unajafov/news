@@ -1,9 +1,9 @@
 package az.najafov.deforestationnews.security.provider;
 
 
-import az.najafov.deforestationnews.security.AuthenticationRequestDto;
-import az.najafov.deforestationnews.security.CustomUserDetailsService;
-import az.najafov.deforestationnews.security.UserDetails;
+import az.najafov.deforestationnews.dto.AuthenticationRequestDto;
+import az.najafov.deforestationnews.security.userdetails.CustomUserDetailsService;
+import az.najafov.deforestationnews.security.userdetails.UserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

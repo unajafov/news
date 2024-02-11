@@ -23,10 +23,33 @@ import java.util.List;
 @Tag(name = "Cities", description = "API operations for managing cities")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/general/cities")
+@RequestMapping("/api/cities")
 public class CityController {
 
     private final CityService cityService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a new city", description = "Creates a new city with the provided details.")
+    public GenericResponse<Void> create(@RequestBody CityRequestDto cityRequestDto) {
+        cityService.create(cityRequestDto);
+        return GenericResponse.success("SUCCESS");
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update a city", description = "Updates an existing city with the specified ID.")
+    public GenericResponse<Void> update(@PathVariable Long id, @RequestBody CityRequestDto cityRequestDto) {
+        cityService.update(id, cityRequestDto);
+        return GenericResponse.success("SUCCESS");
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete a city", description = "Deletes an existing city based on its unique identifier.")
+    public GenericResponse<Void> delete(@PathVariable Long id) {
+        cityService.delete(id);
+        return GenericResponse.success("SUCCESS");
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get city by ID", description = "Retrieves a specific city based on its unique identifier.")

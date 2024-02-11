@@ -1,7 +1,9 @@
-package az.najafov.deforestationnews.security;
+package az.najafov.deforestationnews.security.userdetails;
 
+import az.najafov.deforestationnews.model.Role;
 import az.najafov.deforestationnews.model.User;
 import az.najafov.deforestationnews.repository.UserRepository;
+import az.najafov.deforestationnews.security.userdetails.UserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

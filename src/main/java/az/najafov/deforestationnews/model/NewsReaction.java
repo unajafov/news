@@ -2,7 +2,6 @@ package az.najafov.deforestationnews.model;
 
 import az.najafov.deforestationnews.common.BaseEntity;
 import az.najafov.deforestationnews.enumeration.NewsReactionType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

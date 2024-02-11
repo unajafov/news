@@ -23,10 +23,34 @@ import java.util.List;
 @Tag(name = "Countries", description = "API operations for managing countries")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/general/countries")
+@RequestMapping("/api/countries")
 public class CountryController {
 
     private final CountryService countryService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a new country", description = "Creates a new country with the provided details.")
+    public GenericResponse<Void> create(@RequestBody CountryRequestDto countryRequestDto) {
+        countryService.create(countryRequestDto);
+        return GenericResponse.success("SUCCESS");
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update a country", description = "Updates an existing country with the specified ID.")
+    public GenericResponse<Void> update(@PathVariable Long id, @RequestBody CountryRequestDto countryRequestDto) {
+        countryService.update(id, countryRequestDto);
+        return GenericResponse.success("SUCCESS");
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete a country", description = "Deletes an existing country based on its " +
+            "unique identifier.")
+    public GenericResponse<Void> delete(@PathVariable Long id) {
+        countryService.delete(id);
+        return GenericResponse.success("SUCCESS");
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get country by ID", description = "Retrieves a specific country based on its " +

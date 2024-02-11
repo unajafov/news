@@ -1,14 +1,16 @@
 package az.najafov.deforestationnews.controller;
 
+import az.najafov.deforestationnews.common.GenericResponse;
+import az.najafov.deforestationnews.dto.BaseNewsResponseDto;
 import az.najafov.deforestationnews.dto.CommentRequestDto;
 import az.najafov.deforestationnews.dto.CommentResponseDto;
 import az.najafov.deforestationnews.dto.CommentUpdateRequestDto;
 import az.najafov.deforestationnews.dto.NewsRequestDto;
-import az.najafov.deforestationnews.dto.BaseNewsResponseDto;
 import az.najafov.deforestationnews.dto.NewsResponseDto;
 import az.najafov.deforestationnews.service.NewsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,10 +28,25 @@ import java.util.List;
 @Tag(name = "News", description = "API operations for managing news articles and comments")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/general/news")
+@RequestMapping("/api/news")
 public class NewsController {
 
     private final NewsService newsService;
+
+    @PostMapping
+    @Operation(summary = "Create a new news article", description = "Creates a new news article with " +
+            "the provided details.")
+    public GenericResponse<Void> create(@RequestBody NewsRequestDto requestDto) {
+        newsService.create(requestDto);
+        return GenericResponse.success("SUCCESS");
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update a news article", description = "Updates an existing news article with " +
+            "the specified ID.")
+    public void update(@PathVariable Long id, @RequestBody NewsRequestDto requestDto) {
+        newsService.update(id, requestDto);
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get news article by ID", description = "Retrieves a specific news article based on " +
@@ -59,25 +76,25 @@ public class NewsController {
         return newsService.getRegionalNews(regionId);
     }
 
-    @GetMapping("/regions/users/{userId}")
+    @GetMapping("/regions/users")
     @Operation(summary = "Get regional news articles by user", description = "Retrieves news articles for a specific " +
             "region based on the user's ID.")
-    public List<BaseNewsResponseDto> getRegionalNewsByUser(@PathVariable Long userId) {
-        return newsService.getRegionalNewsByUser(userId);
+    public List<BaseNewsResponseDto> getRegionalNewsByUser(HttpServletRequest request) {
+        return newsService.getRegionalNewsByUser(request);
     }
 
     @PostMapping("{id}/comments")
     @Operation(summary = "Add comment to news article", description = "Adds a new comment to the " +
             "specified news article.")
-    public void addComment(@PathVariable Long id, CommentRequestDto requestDto) {
-        newsService.addComment(id, requestDto);
+    public void addComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
+        newsService.addComment(id, requestDto, request);
     }
 
     @PutMapping("{id}/comments")
     @Operation(summary = "Update comment on news article", description = "Updates an existing comment on the " +
             "specified news article.")
-    public void updateComment(@PathVariable Long id, CommentUpdateRequestDto requestDto) {
-        newsService.updateComment(id, requestDto);
+    public void updateComment(@PathVariable Long id, CommentUpdateRequestDto requestDto, HttpServletRequest request) {
+        newsService.updateComment(id, requestDto, request);
     }
 
     @GetMapping("{id}/comments")
@@ -94,25 +111,25 @@ public class NewsController {
         return newsService.getCommentById(id);
     }
 
-    @PostMapping("/{newsId}/users/{userId}/views")
+    @PostMapping("/{newsId}/views")
     @Operation(summary = "Add view to news article", description = "Adds a new view to the " +
             "specified news article.")
-    public void view(@PathVariable Long newsId, @PathVariable Long userId) {
-        newsService.view(userId, newsId);
+    public void view(@PathVariable Long newsId, HttpServletRequest request) {
+        newsService.view(newsId, request);
     }
 
-    @PostMapping("/{newsId}/users/{userId}/likes")
+    @PostMapping("/{newsId}/likes")
     @Operation(summary = "Add like to news article", description = "Adds a new like to the " +
             "specified news article.")
-    public void like(@PathVariable Long newsId, @PathVariable Long userId) {
-        newsService.like(userId, newsId);
+    public void like(@PathVariable Long newsId, HttpServletRequest request) {
+        newsService.like(newsId, request);
     }
 
-    @PostMapping("/{newsId}/users/{userId}/dislikes")
+    @PostMapping("/{newsId}/dislikes")
     @Operation(summary = "Add dislike to news article", description = "Adds a new dislike to the " +
             "specified news article.")
-    public void dislike(@PathVariable Long newsId, @PathVariable Long userId) {
-        newsService.dislike(userId, newsId);
+    public void dislike(@PathVariable Long newsId, HttpServletRequest request) {
+        newsService.dislike(newsId, request);
     }
 
 }

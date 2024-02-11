@@ -1,6 +1,7 @@
-package az.najafov.deforestationnews.security;
+package az.najafov.deforestationnews.model;
 
 import az.najafov.deforestationnews.common.BaseEntity;
+import az.najafov.deforestationnews.model.IgnoredPermission;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,10 +28,10 @@ public class Role extends BaseEntity {
     private Long id;
     private String name;
 
-//    @ManyToMany
-//    @JoinTable(name = "role_ignored_permissions",
-//            joinColumns = {@JoinColumn(name = "role_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "ignored_permission_id")})
-//    private List<IgnoredPermission> ignoredPermissions;
+    @ManyToMany
+    @JoinTable(name = "role_ignored_permissions",
+            joinColumns = {@JoinColumn(name = "role_id")},
+            inverseJoinColumns = {@JoinColumn(name = "ignored_permission_id")})
+    private List<IgnoredPermission> ignoredPermissions;
 
 }

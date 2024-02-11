@@ -35,3 +35,4 @@ server:
 static:
   role:
     admin_id: 1
+    user_id: 2

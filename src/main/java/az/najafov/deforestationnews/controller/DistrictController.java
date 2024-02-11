@@ -23,10 +23,34 @@ import java.util.List;
 @Tag(name = "Districts", description = "API operations for managing districts")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/general/districts")
+@RequestMapping("/api/districts")
 public class DistrictController {
 
     private final DistrictService districtService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a new district", description = "Creates a new district with the provided details.")
+    public GenericResponse<Void> create(@RequestBody DistrictRequestDto districtRequestDto) {
+        districtService.create(districtRequestDto);
+        return GenericResponse.success("SUCCESS");
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update a district", description = "Updates an existing district with the specified ID.")
+    public GenericResponse<Void> update(@PathVariable Long id, @RequestBody DistrictRequestDto districtRequestDto) {
+        districtService.update(id, districtRequestDto);
+        return GenericResponse.success("SUCCESS");
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete a district", description = "Deletes an existing district based on its " +
+            "unique identifier.")
+    public GenericResponse<Void> delete(@PathVariable Long id) {
+        districtService.delete(id);
+        return GenericResponse.success("SUCCESS");
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get district by ID", description = "Retrieves a specific district based on its " +
