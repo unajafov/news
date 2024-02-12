@@ -33,7 +33,7 @@ public class SwaggerConfiguration {
         return new Info()
                 .contact(contact)
                 .description("API documentation of deforestation news.")
-                .title("pcs")
+                .title("deforestation-news")
                 .version("V1.0.0")
                 .license(new License().name("Apache 2.0").url("https://springdoc.org"));
     }
